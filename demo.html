@@ -4,22 +4,15 @@
 <meta charset="utf-8" />
 </head>
 <body>
-<div id="box">
-	<span id="day-box"></span> 天
-	<span id="hour-box"></span> 时
-	<span id="minute-box"></span> 分
-	<span id="second-box"></span> 秒
+<div id="countDown">
+	
 </div>
-<div id="box2"></div>
+<div id="box"></div>
 <script src="countdown.js"></script>
 <script>
-CountDown("2016/12/30 15:00",{
-	box:document.getElementById('box'),
-	day_box:document.getElementById('day-box'),
-	hour_box:document.getElementById('hour-box'),
-	minute_box:document.getElementById('minute-box'),
-	second_box:document.getElementById('second-box')
-});
+countDown({time:'2017/03/13 14:30',format:'dd天/hh时/mm分/ss秒',container:document.getElementById('box')},function(){
+  alert('11111')
+})
 </script>
 </body>
 </html>

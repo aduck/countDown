@@ -1,26 +1,30 @@
-function CountDown(t,opt){
-	var opt=opt||{};
-		box=opt.box||{},
-		day_box=opt.day_box||{},
-		hour_box=opt.hour_box||{},
-		minute_box=opt.minute_box||{},
-		second_box=opt.second_box||{};
-	var endTime=Date.parse(t),
-		nowTime=new Date().getTime();
-		leftTime=endTime-nowTime;
-	if(nowTime>=endTime){
-		box.innerHTML="开始抢购";
-		return;
-	}
-	var leftTime_day=Math.floor(leftTime/86400000),
-		leftTime_h=Math.floor((leftTime-leftTime_day*86400000)/3600000),
-		leftTime_m=Math.floor((leftTime-leftTime_day*86400000-leftTime_h*3600000)/60000),
-		leftTime_s=Math.floor((leftTime-leftTime_day*86400000-leftTime_h*3600000-leftTime_m*60000)/1000);
-	day_box.innerHTML=leftTime_day>=10?leftTime_day:"0"+leftTime_day;
-	hour_box.innerHTML=leftTime_h>=10?leftTime_h:"0"+leftTime_h;
-	minute_box.innerHTML=leftTime_m>=10?leftTime_m:"0"+leftTime_m;
-	second_box.innerHTML=leftTime_s>=10?leftTime_s:"0"+leftTime_s;
-	setTimeout(function(){
-		CountDown(t,opt);
-	},20);
+function countDown(opts,cb){
+  var opts=opts || {}
+  var time=opts.time || null
+  var format=opts.format || 'dd天 hh时 mm分 ss秒'
+  var container=opts.container || document.getElementById('countDown')
+  var nowTime=new Date().getTime()
+  var endTime=new Date(time).getTime()
+  var leftTime=endTime-nowTime
+  if(leftTime<=0){
+    cb && cb()
+    return
+  }  
+  var day=Math.floor(leftTime/(24*60*60*1000))
+  var hour=Math.floor((leftTime-day*24*60*60*1000)/(60*60*1000))
+  var minute=Math.floor((leftTime-day*24*60*60*1000-hour*60*60*1000)/(60*1000))
+  var seconds=Math.floor((leftTime-day*24*60*60*1000-hour*60*60*1000-minute*60*1000)/1000)
+  var mseconds=leftTime-day*24*60*60*1000-hour*60*60*1000-minute*60*1000-seconds*1000
+  hour=hour>=10 ? hour : ('0'+hour)
+  minute=minute>=10 ? minute : ('0'+minute)
+  seconds=seconds>=10 ? seconds : ('0'+seconds)
+  container.innerHTML=format
+    .replace(/dd/,day)
+    .replace(/hh/,hour)
+    .replace(/mm/,minute)
+    .replace(/ss/,seconds)
+    .replace(/ms/,mseconds)
+  setTimeout(function(){
+    countDown(opts,cb)
+  },16)
 }
